@@ -1,0 +1,1 @@
+{"version":3,"sources":["customstyles.css"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA","file":"all.css","sourcesContent":[".margin-top-20px{\r\n\tmargin-top:20px;\r\n}\r\n\r\n.clickable-row{\r\n\tcursor:pointer;\r\n}\r\n\r\ntd.white-space-no-wrap{\r\n\twhite-space: nowrap;\r\n}"],"sourceRoot":"/source/"}
