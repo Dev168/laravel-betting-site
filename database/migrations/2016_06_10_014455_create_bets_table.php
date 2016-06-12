@@ -16,10 +16,10 @@ class CreateBetsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('game_id')->unsigned();
-            $table->char('outcome_id', 8);
-            $table->decimal('price', 8, 3);
-            $table->double('volume');
-            $table->double('pending_volume');
+            $table->char('outcome_name', 8);
+            $table->decimal('odds', 8, 3);
+            $table->double('amount');
+            $table->double('pending_amount');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

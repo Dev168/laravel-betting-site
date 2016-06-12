@@ -15,20 +15,22 @@
                         <tr>
                             <th>Game Name</th>
                             <th>Game Start Time</th>
-                            <th>Team 1</th>
-                            <th>Odds</th>
-                            <th>Team 2</th>
-                            <th>Odds</th>
+                            @foreach($games as $game)
+                                @foreach($game->outcomes as $key => $outcome)
+                                    <th>Team {{ $key+1 }}</th>
+                                    <th>Odds</th>
+                                @endforeach
+                            @endforeach
                         </tr>
                     </thead>
                     @foreach($games as $game)
-                        <tr class="table-hover clickable-row" data-href="games/{{ $game->id }}">
+                        <tr class="table-hover clickable-row" data-href="betting/{{ $game->id }}">
                             <td>{{ $game->game_name }}</td>
-                            <td>{{ $game->game_time }}</td>
-                            <td>{{ $game->outcome_1_name }}</td>
-                            <td>{{ $game->outcome_1_odds }}</td>
-                            <td>{{ $game->outcome_2_name }}</td>
-                            <td>{{ $game->outcome_1_odds }}</td>
+                            <td>{{ $game->game_start_time }}</td>
+                            @foreach($game->outcomes as $outcome)
+                                <td>{{ $outcome->outcome_name }}</td>
+                                <td>{{ $outcome->outcome_odds }}</td>
+                            @endforeach
                         </tr>
                     @endforeach
                 </table>

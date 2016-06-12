@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Carbon\Carbon;
 use App\Models\Bet;
 use App\Models\Game;
 use App\Http\Requests;
+use App\Models\Outcome;
 use Illuminate\Http\Request;
 
 class GamesController extends Controller
@@ -14,11 +17,7 @@ class GamesController extends Controller
     }
 
     public function show($id){
-    	$game = Game::find($id);
-    	if($game){
-    		return view('games.show')->with(compact('game'));
-    	}
-    	return redirect('/');
+    	
     }
 
     public function store(Request $request){
@@ -30,11 +29,12 @@ class GamesController extends Controller
 
     	$game = new Game;
     	$game->game_name = $request->game_name;
-    	$game->outcome_1_name = $request->outcome_1_name;
-    	$game->outcome_2_name = $request->outcome_2_name;
-    	$game->outcome_1_odds = 1.95;
-    	$game->outcome_2_odds = 1.95;
     	$game->save();
+
+        DB::table('outcomes')->insert([
+            ['game_id' => $game->id, 'outcome_name' => $request->outcome_1_name, 'outcome_odds' => 1.95, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['game_id' => $game->id, 'outcome_name' => $request->outcome_2_name, 'outcome_odds' => 1.95, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+        ]);
 
     	return redirect('/games');
     }

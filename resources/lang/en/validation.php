@@ -90,6 +90,7 @@ return [
     | specify a specific custom language line for a given attribute rule.
     |
     */
+    'strength' => 'The odds you selected no longer available, please try again',
 
     'custom' => [
         'attribute-name' => [
