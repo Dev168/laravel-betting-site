@@ -25,7 +25,7 @@
                                         data-outcome="{{ $outcome->outcome_name }}"
                                         data-odds="{{ $outcome->outcome_odds }}"
                                     >
-                                    Place $50 Bet
+                                    Place Bet
                                     </button>
                                 </td>
                             </tr>
