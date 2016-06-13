@@ -6,7 +6,7 @@
         <div class="col-md-10 col-md-offset-1">
             <ul class="nav nav-tabs">
               <li role="presentation" class="active"><a href="/betting">Betting</a></li>
-              <li role="presentation"><a href="/games">Games</a></li>
+              <li role="presentation"><a href="/games">Games (Admin)</a></li>
             </ul>
             <div class="panel panel-default margin-top-20px">
                 <div class="panel-heading">Select a game to bet on</div>

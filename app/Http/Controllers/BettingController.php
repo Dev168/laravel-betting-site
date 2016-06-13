@@ -6,6 +6,7 @@ use Auth;
 use App\Models\Bet;
 use App\Models\Game;
 use App\Http\Requests;
+use App\Models\Outcome;
 use Illuminate\Http\Request;
 
 class BettingController extends Controller
@@ -16,7 +17,10 @@ class BettingController extends Controller
 
     public function show($id){
     	if($game = Game::with('outcomes')->find($id)){
-    		return view('betting.show')->with(compact('game'));
+    		$pendingBets = Bet::where('game_id', $id)->where('pending_amount', '>', 0)->orderBy('odds', 'desc')->get();
+    		$filledBets = Bet::where('game_id', $id)->where('pending_amount', 0)->orderBy('odds', 'desc')->get();
+    		$outcomes = Bet::select('outcome_name')->where('game_id', $id)->distinct()->lists('outcome_name');
+    		return view('betting.show')->with(compact('game', 'pendingBets', 'filledBets', 'outcomes'));
     	}
     	return redirect('/');
     }
@@ -28,13 +32,10 @@ class BettingController extends Controller
     		"amount" => "required|numeric|min:1"
     	]);
 
-    	$bet = new Bet;
-    	$bet->user_id = Auth::id();
-    	$bet->game_id = $request->gameId;
-    	$bet->outcome_name = $request->outcome_name;
-    	$bet->odds = $request->odds;
-    	$bet->amount = $request->amount;
-    	$bet->pending_amount = $request->amount;
-    	$bet->save();
+    	$bet = Bet::createBet($request);
+    	Outcome::updateOdds($bet);
+    	Bet::matchBets($bet);
+
+    	return redirect('/betting/'.$request->gameId);
     }
 }

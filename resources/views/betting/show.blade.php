@@ -6,7 +6,7 @@
         <div class="col-md-10 col-md-offset-1">
             <ul class="nav nav-tabs">
               <li role="presentation" class="active"><a href="/betting">Betting</a></li>
-              <li role="presentation"><a href="/games">Games</a></li>
+              <li role="presentation"><a href="/games">Games (Admin)</a></li>
             </ul>
             <div class="panel panel-default margin-top-20px">
                 <div class="panel-heading">Betting on {{ $game->game_name }}</div>
@@ -25,13 +25,75 @@
                                         data-outcome="{{ $outcome->outcome_name }}"
                                         data-odds="{{ $outcome->outcome_odds }}"
                                     >
-                                    Place Bet
+                                    Place $50 Bet
                                     </button>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+            <div class="row">
+                @foreach($outcomes as $outcome)
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Bets on {{ $outcome }}</div>
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Odds</th>
+                                        <th>Amount</th>
+                                        <th>Pending</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($pendingBets as $bet)
+                                        @if($bet->outcome_name == $outcome)
+                                            <tr>
+                                                <td>{{ $bet->user->name }}</td>
+                                                <td>{{ $bet->odds }}</td>
+                                                <td>{{ $bet->amount }}</td>
+                                                <td>{{ $bet->pending_amount }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="row">
+                @foreach($outcomes as $outcome)
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Filled bets on {{ $outcome }}</div>
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Odds</th>
+                                        <th>Amount</th>
+                                        <th>Pending</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($filledBets as $bet)
+                                        @if($bet->outcome_name == $outcome)
+                                            <tr>
+                                                <td>{{ $bet->user->name }}</td>
+                                                <td>{{ $bet->odds }}</td>
+                                                <td>{{ $bet->amount }}</td>
+                                                <td>{{ $bet->pending_amount }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -63,7 +125,7 @@
                         <label for="amount">Amount ($)</label>
                         <div class="input-group">
                             <div class="input-group-addon">$</div>
-                            <input class="form-control" type="text" name="amount" id="amount">
+                            <input class="form-control" type="text" name="amount" id="amount" value="50.00" readonly>
                         </div>
                     </div>
                 </div>

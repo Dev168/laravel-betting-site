@@ -23,4 +23,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function bets(){
+        return $this->hasMany('App\Models\Bet');
+    }
 }
