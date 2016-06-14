@@ -18,8 +18,10 @@ class CreateBetsTable extends Migration
             $table->integer('game_id')->unsigned();
             $table->char('outcome_name', 8);
             $table->decimal('odds', 8, 3);
-            $table->double('amount');
-            $table->double('pending_amount');
+            $table->double('stake', 10, 2);
+            $table->double('total_amount', 10, 2);
+            $table->double('pending_amount', 10, 2);
+            $table->boolean('active')->default(true);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

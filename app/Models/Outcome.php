@@ -12,15 +12,16 @@ class Outcome extends Model
     	return $this->belongsTo('App\Models\Game');
     }
 
-    public static function updateOdds(Bet $bet){
+    public static function updateOutcomes(Bet $bet){
     	//Only works for 2 possible outcomes
-    	$selectedOutcome = Outcome::where(['game_id' => $bet->game_id, 'outcome_name' => $bet->outcome_name])->first();
-    	$selectedOutcome->outcome_odds = $selectedOutcome->outcome_odds - 0.05;
-    	$selectedOutcome->save();
+    	$currentOutcome = Outcome::where(['game_id' => $bet->game_id, 'outcome_name' => $bet->outcome_name])->first();
+    	$currentOutcome->outcome_odds = $currentOutcome->outcome_odds - 0.05;
+    	$currentOutcome->total_volume_pending = $currentOutcome->total_volume_pending + $bet->stake * $bet->odds;
+    	$currentOutcome->save();
 
-    	$otherOutcome = Outcome::getOppositeOutcome($bet->game_id, $bet->outcome_name);
-    	$otherOutcome->outcome_odds = 20*$selectedOutcome->outcome_odds/(21*$selectedOutcome->outcome_odds - 20);
-    	$otherOutcome->save();
+    	$oppositeOutcome = Outcome::getOppositeOutcome($bet->game_id, $bet->outcome_name);
+    	$oppositeOutcome->outcome_odds = 20*$currentOutcome->outcome_odds/(21*$currentOutcome->outcome_odds - 20);
+    	$oppositeOutcome->save();
     }
 
     public static function getOppositeOutcome($gameId, $currentOutcomeName){
