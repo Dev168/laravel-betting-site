@@ -4,10 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
-            <ul class="nav nav-tabs">
-              <li role="presentation"><a href="/betting">Betting</a></li>
-              <li role="presentation" class="active"><a href="/games">Games (Admin)</a></li>
-            </ul>
+            @include('layouts.partials.navbar', ['activePage' => 'gamesAdmin'])
             <div class="panel panel-default margin-top-20px">
                 <div class="panel-heading">Current odds on {{ $game->game_name }}</div>
                 <table class="table table-hover table-bordered">

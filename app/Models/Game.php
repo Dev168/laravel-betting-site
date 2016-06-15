@@ -9,4 +9,8 @@ class Game extends Model
     public function outcomes(){
     	return $this->hasMany('App\Models\Outcome');
     }
+
+    public function bets(){
+    	return $this->hasMany('App\Models\Bets');
+    }
 }

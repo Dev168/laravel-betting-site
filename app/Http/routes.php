@@ -15,4 +15,5 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/', 'BettingController@index');
 	Route::resource('betting', 'BettingController');
 	Route::resource('games', 'GamesController');
+	Route::get('user/bets', 'UserController@bets');
 });
