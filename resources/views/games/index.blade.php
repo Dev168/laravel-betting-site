@@ -43,13 +43,20 @@
             @if(isset($games))
                 <div class="panel panel-default">
                     <div class="panel-heading">Current Games</div>
-                    <div class="panel-body">
-                        <ul>
-                            @foreach($games as $game)
-                                <li>{{ $game->game_name }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Game Name</th>
+                                <th>Game Start Time</th>
+                            </tr>
+                        </thead>
+                        @foreach($games as $game)
+                            <tr class="table-hover clickable-row" data-href="games/{{ $game->id }}">
+                                <td>{{ $game->game_name }}</td>
+                                <td>{{ $game->game_start_time }}</td>
+                            </tr>
+                        @endforeach
+                    </table>
                 </div>
             @endif
         </div>

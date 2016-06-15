@@ -1,0 +1,1 @@
+{"version":3,"sources":["scripts.js"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA","file":"all.js","sourcesContent":["$(\".clickable-row\").click(function() {\r\n    window.document.location = $(this).data(\"href\");\r\n    console.log(\"clicked\");\r\n});\r\nconsole.log(\"loaded\");"],"sourceRoot":"/source/"}

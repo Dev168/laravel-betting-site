@@ -38,10 +38,4 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(".clickable-row").click(function() {
-        window.document.location = $(this).data("href");
-    });
-</script>
 @endsection
