@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\Bet;
 use App\Models\Game;
+use App\Models\User;
 use App\Http\Requests;
 use App\Models\Outcome;
 use Illuminate\Http\Request;
@@ -27,12 +28,13 @@ class BettingController extends Controller
     	$this->validate($request, [
     		"outcome_name" => "required|string",
     		"odds" => "required|within_percentage:".$request->outcome_name.",".$request->odds.",10",
-    		"amount" => "required|numeric|min:1"
+    		"amount" => "required|numeric|min:1|max:".Auth::user()->account_balance,
     	]);
 
     	$bet = Bet::createBet($request);
     	Outcome::updateOutcomes($bet);
     	Bet::matchBets($bet);
+        User::updateAccountBalance($bet);
 
     	return redirect('/betting/'.$request->gameId);
     }

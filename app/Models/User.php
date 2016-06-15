@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Auth;
+use App\Models\Bet;
+use App\Models\User;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -12,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'account_balance',
     ];
 
     /**
@@ -26,5 +29,11 @@ class User extends Authenticatable
 
     public function bets(){
         return $this->hasMany('App\Models\Bet');
+    }
+
+    public static function updateAccountBalance(Bet $bet){
+        $user = User::find(Auth::id());
+        $user->account_balance = $user->account_balance - $bet->stake;
+        $user->save();
     }
 }
