@@ -17,7 +17,13 @@ class GamesController extends Controller
     }
 
     public function show($id){
-    	
+    	if($game = Game::with('outcomes')->find($id)){
+    		$pendingBets = Bet::where('game_id', $id)->where('pending_amount', '>', 0)->orderBy('odds', 'desc')->get();
+    		$filledBets = Bet::where('game_id', $id)->where('pending_amount', 0)->orderBy('odds', 'desc')->get();
+    		$outcomes = Outcome::select('outcome_name', 'total_volume_pending')->where('game_id', $id)->get();
+    		return view('games.show')->with(compact('game', 'pendingBets', 'filledBets', 'outcomes'));
+    	}
+    	return redirect('/');
     }
 
     public function store(Request $request){
