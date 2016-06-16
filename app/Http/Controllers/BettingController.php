@@ -8,6 +8,7 @@ use App\Models\Game;
 use App\Models\User;
 use App\Http\Requests;
 use App\Models\Outcome;
+use App\Models\Business;
 use Illuminate\Http\Request;
 
 class BettingController extends Controller
@@ -27,11 +28,12 @@ class BettingController extends Controller
     public function store(Request $request){
     	$this->validate($request, [
     		"outcome_name" => "required|string",
-    		"odds" => "required|within_percentage:".$request->outcome_name.",".$request->odds.",10",
+    		"odds" => "required",
     		"amount" => "required|numeric|min:1|max:".Auth::user()->account_balance,
     	]);
 
     	$bet = Bet::createBet($request);
+        Business::updateBankBalance($bet->stake);
     	Outcome::updateOutcomes($bet);
     	Bet::matchBets($bet);
         User::updateAccountBalance($bet);

@@ -47,8 +47,8 @@ class GamesController extends Controller
 
     public function declareWinner(Request $request){
         Bet::deactivateUnfilledBets($request->gameId);
-        Bet::updateWinningBets($request->gameId, $request->winningOutcome);
-        Bet::updateLosingBets($request->gameId, $request->winningOutcome);
+        Bet::payoutWinningBets($request->gameId, $request->winningOutcome);
+        Bet::collectLosingBets($request->gameId, $request->winningOutcome);
         Game::end($request->gameId, $request->winningOutcome);
         return redirect()->back();
     }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Auth;
+use App\Models\Business;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,6 +32,8 @@ class Bet extends Model
         $user = User::find($this->user_id);
         $user->account_balance = $user->account_balance + ($this->total_amount - $this->pending_amount);
         $user->save();
+
+        Business::updateBankBalance(-$this->total_amount - $this->pending_amount);
     }
 
     public static function createBet(Request $request){
@@ -104,17 +107,19 @@ class Bet extends Model
             $user = User::find($bet->user_id);
             $user->account_balance = $user->account_balance + $bet->stake;
             $user->save();
+
+            Business::updateBankBalance(-$bet->stake);
         }
     }
 
-    public static function updateWinningBets($gameId, $winningOutcome){
+    public static function payoutWinningBets($gameId, $winningOutcome){
         $winningBets = Bet::whereActive()->where(['game_id' => $gameId, 'outcome_name' => $winningOutcome])->get();
         foreach($winningBets as $bet){
             $bet->payout();
         }
     }
 
-    public static function updateLosingBets($gameId, $winningOutcome){
+    public static function collectLosingBets($gameId, $winningOutcome){
         $losingBets = Bet::whereActive()->where(['game_id' => $gameId, 'outcome_name' => Outcome::getOppositeOutcome($gameId, $winningOutcome)->outcome_name])->get();
         foreach($losingBets as $bet){
             $bet->status = "Lost";
@@ -122,8 +127,10 @@ class Bet extends Model
 
             //Return pending amount on partially filled bets
             $user = User::find($bet->user_id);
-            $user->account_balance = $user->account_balance - $bet->pending_amount;
+            $user->account_balance = $user->account_balance + $bet->pending_amount;
             $user->save();
+
+            Business::updateBankBalance(-$bet->pending_amount);
         }
     }
 }
