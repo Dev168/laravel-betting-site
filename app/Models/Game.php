@@ -13,4 +13,12 @@ class Game extends Model
     public function bets(){
     	return $this->hasMany('App\Models\Bets');
     }
+
+    public function winner(){
+    	return $this->hasOne('App\Models\Outcome');
+    }
+
+    public function end($winningOutcome){
+    	
+    }
 }

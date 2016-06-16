@@ -13,6 +13,14 @@
                             <tr>
                                 <td class="col-md-5">{{ $outcome->outcome_name }}</td>
                                 <td class="col-md-5">{{ $outcome->outcome_odds }}</td>
+                                <td class="col-md-2">
+                                    <form action="/games/winner" method="POST">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="gameId" value="{{ $game->id }}">
+                                        <input type="hidden" name="winningOutcome" value="{{ $outcome->outcome_name }}">
+                                        <button class="btn btn-success" type="submit">Declare Winner</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

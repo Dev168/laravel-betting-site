@@ -21,7 +21,16 @@ class Bet extends Model
     }
 
     public function scopeWhereActive($query){
-    	return $query->where('active', 1);
+    	return $query->where('status', 'active');
+    }
+
+    public function payout(){
+        $this->status = "Won";
+        $this->save();
+
+        $user = User::find($this->user_id);
+        $user->account_balance = $user->account_balance + ($this->total_amount - $this->pending_amount);
+        $user->save();
     }
 
     public static function createBet(Request $request){
@@ -84,5 +93,37 @@ class Bet extends Model
     			Bet::fillPendingBets($currentBet);
     		}
     	}
+    }
+
+    public static function deactivateUnfilledBets($gameId){
+        $unfilledBets = Bet::where('game_id', $gameId)->whereRaw('total_amount = pending_amount')->get();
+        foreach($unfilledBets as $bet){
+            $bet->status = "cancelled";
+            $bet->save();
+
+            $user = User::find($bet->user_id);
+            $user->account_balance = $user->account_balance + $bet->stake;
+            $user->save();
+        }
+    }
+
+    public static function updateWinningBets($gameId, $winningOutcome){
+        $winningBets = Bet::whereActive()->where(['game_id' => $gameId, 'outcome_name' => $winningOutcome])->get();
+        foreach($winningBets as $bet){
+            $bet->payout();
+        }
+    }
+
+    public static function updateLosingBets($gameId, $winningOutcome){
+        $losingBets = Bet::whereActive()->where(['game_id' => $gameId, 'outcome_name' => Outcome::getOppositeOutcome($gameId, $winningOutcome)->outcome_name])->get();
+        foreach($losingBets as $bet){
+            $bet->status = "Lost";
+            $bet->save();
+
+            //Return pending amount on partially filled bets
+            $user = User::find($bet->user_id);
+            $user->account_balance = $user->account_balance - $bet->pending_amount;
+            $user->save();
+        }
     }
 }

@@ -10,13 +10,14 @@
                 <table class="table table-hover table-bordered">
                     <thead>
                         <tr>
-                            <th>Bet Id</th>
+                            <th>Id</th>
                             <th>Game</th>
                             <th>Team</th>
                             <th>Odds</th>
                             <th>Stake</th>
                             <th>Total</th>
                             <th>Pending</th>
+                            <th>Status</th>
                             <th>Created</th>
                         </tr>
                     </thead>
@@ -29,6 +30,7 @@
                             <td>{{ $bet->stake }}</td>
                             <td>{{ $bet->total_amount }}</td>
                             <td>{{ $bet->pending_amount }}</td>
+                            <td>{{ $bet->status }}</td>
                             <td>{{ $bet->created_at }}</td>
                         </tr>
                     @endforeach

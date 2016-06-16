@@ -44,4 +44,11 @@ class GamesController extends Controller
 
     	return redirect('/games');
     }
+
+    public function declareWinner(Request $request){
+        Bet::deactivateUnfilledBets($request->gameId);
+        Bet::updateWinningBets($request->gameId, $request->winningOutcome);
+        Bet::updateLosingBets($request->gameId, $request->winningOutcome);
+        return redirect()->back();
+    }
 }

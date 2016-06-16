@@ -21,7 +21,7 @@ class CreateBetsTable extends Migration
             $table->double('stake', 10, 2);
             $table->double('total_amount', 10, 2);
             $table->double('pending_amount', 10, 2);
-            $table->boolean('active')->default(true);
+            $table->string('status')->default('active');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
