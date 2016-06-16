@@ -49,6 +49,7 @@ class GamesController extends Controller
         Bet::deactivateUnfilledBets($request->gameId);
         Bet::updateWinningBets($request->gameId, $request->winningOutcome);
         Bet::updateLosingBets($request->gameId, $request->winningOutcome);
+        Game::end($request->gameId, $request->winningOutcome);
         return redirect()->back();
     }
 }

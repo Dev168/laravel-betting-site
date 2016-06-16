@@ -45,12 +45,14 @@
                             <tr>
                                 <th>Game Name</th>
                                 <th>Game Start Time</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         @foreach($games as $game)
                             <tr class="table-hover clickable-row" data-href="games/{{ $game->id }}">
                                 <td>{{ $game->game_name }}</td>
                                 <td>{{ $game->game_start_time }}</td>
+                                <td>{{ ucfirst($game->status) }}</td>
                             </tr>
                         @endforeach
                     </table>
