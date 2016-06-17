@@ -6,6 +6,9 @@
         <div class="col-md-10 col-md-offset-1">
             @include('layouts.partials.navbar', ['activePage' => 'gamesAdmin'])
             <div class="panel panel-default margin-top-20px">
+            <div class="panel-heading">Business Bank Balance: <b>${{ number_format($businessBank, 2) }}</b></div>
+            </div>
+            <div class="panel panel-default">
                 <div class="panel-heading">Create a game</div>
                 <div class="panel-body">
                     <div class="col-md-6">

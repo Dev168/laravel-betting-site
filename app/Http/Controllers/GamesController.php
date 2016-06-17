@@ -8,12 +8,13 @@ use App\Models\Bet;
 use App\Models\Game;
 use App\Http\Requests;
 use App\Models\Outcome;
+use App\Models\Business;
 use Illuminate\Http\Request;
 
 class GamesController extends Controller
 {
     public function index(){
-    	return view('games.index')->with('games', Game::all());
+    	return view('games.index')->with(['games' => Game::all(), 'businessBank' => Business::bankBalance()]);
     }
 
     public function show($id){
