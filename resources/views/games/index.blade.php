@@ -11,33 +11,47 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Create a game</div>
                 <div class="panel-body">
-                    <div class="col-md-6">
-                        <form {{ action('GamesController@store') }}" method="POST">
-                            {{ csrf_field() }}
-                            <div class="form-group">
-                                <label for="game_name">Game Name</label>
-                                <input type="text" class="form-control" name="game_name" placeholder="Game Name">
+                    <form {{ action('GamesController@store') }}" method="POST">
+                        <div class-="col-md-12">
+                            <div class="col-md-6 col-md-offset-3">
+                                {{ csrf_field() }}
+                                <div class="form-group">
+                                    <label for="game_name">Game Name</label>
+                                    <input type="text" class="form-control" name="game_name" placeholder="Game Name">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="outcome_1_name">Outcome 1 Name</label>
-                                <input type="text" class="form-control" name="outcome_1_name" placeholder="Outcome 1 Name">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="outcome_1_name">Outcome 1 Name</label>
+                                    <input type="text" class="form-control" name="outcome_1_name" placeholder="Outcome 1 Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="outcome_2_name">Outcome 2 Name</label>
+                                    <input type="text" class="form-control" name="outcome_2_name" placeholder="Outcome 2 Name">
+                                </div>
+                                <button class="btn btn-primary" type="submit">Create</button>
                             </div>
-                            <div class="form-group">
-                                <label for="outcome_2_name">Outcome 2 Name</label>
-                                <input type="text" class="form-control" name="outcome_2_name" placeholder="Outcome 2 Name">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="outcome_1_name">Outcome 1 Odds</label>
+                                    <input type="text" class="form-control" name="outcome_1_odds" placeholder="Outcome 1 Odds">
+                                </div>
+                                <div class="form-group">
+                                    <label for="outcome_2_name">Outcome 2 Odds</label>
+                                    <input type="text" class="form-control" name="outcome_2_odds" placeholder="Outcome 2 Odds">
+                                </div>
                             </div>
-                            <button class="btn btn-primary" type="submit">Create</button>
-                        </form>
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                    </div>
+                            @if (count($errors) > 0)
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                        </div>
+                    </form>
                 </div>
             </div>
             @if(isset($games))
