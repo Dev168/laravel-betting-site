@@ -32,6 +32,8 @@ class GamesController extends Controller
     		'game_name' => 'required|string|unique:games|max:255',
     		'outcome_1_name' => 'required|string|max:255',
     		'outcome_2_name' => 'required|string|max:255',
+            'outcome_1_odds' => 'required|numeric|min:1',
+            'outcome_2_odds' => 'required|numeric|min:1',
     	]);
 
     	$game = new Game;
@@ -39,8 +41,8 @@ class GamesController extends Controller
     	$game->save();
 
         DB::table('outcomes')->insert([
-            ['game_id' => $game->id, 'outcome_name' => $request->outcome_1_name, 'outcome_odds' => 1.95, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-            ['game_id' => $game->id, 'outcome_name' => $request->outcome_2_name, 'outcome_odds' => 1.95, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['game_id' => $game->id, 'outcome_name' => $request->outcome_1_name, 'outcome_odds' => $request->outcome_1_odds, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['game_id' => $game->id, 'outcome_name' => $request->outcome_2_name, 'outcome_odds' => $request->outcome_2_odds, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
         ]);
 
     	return redirect('/games');
