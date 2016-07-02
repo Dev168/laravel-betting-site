@@ -26,14 +26,24 @@ class Bet extends Model
     }
 
     public function payout(){
-        $this->status = "Won";
-        $this->save();
-
         $user = User::find($this->user_id);
-        $user->account_balance = $user->account_balance + ($this->total_amount - $this->pending_amount);
+        //Handle fully-filled winning bets
+        if($this->pending_amount == 0){
+            $this->status = "Won";
+            $user->account_balance = $user->account_balance + ($this->total_amount - $this->pending_amount);
+            Business::updateBankBalance(-$this->total_amount - $this->pending_amount);
+        }
+        //Handle partially filled winning bets
+        elseif($this->pending_amount > 0){
+            $this->status = "Partially Won";
+            $stakeFilled = $this->stake * (100 / $this->total_amount * ($this->total_amount - $this->pending_amount)) / 100;
+            $winningsFromFilled = $stakeFilled * $this->odds;
+            $stakeUnfilled = $this->stake - $stakeFilled;
+            $user->account_balance = $user->account_balance + $winningsFromFilled + $stakeUnfilled;
+            Business::updateBankBalance(-$winningsFromFilled - $stakeUnfilled);
+        }
+        $this->save();
         $user->save();
-
-        Business::updateBankBalance(-$this->total_amount - $this->pending_amount);
     }
 
     public static function createBet(Request $request){
